@@ -2375,45 +2375,8 @@ static int __mt_gpufreq_pdrv_probe(struct platform_device *pdev)
 	 *		g_cur_opp_cond_idx);
 	 */
 
-#if IS_ENABLED(CONFIG_MTK_LOW_BATTERY_POWER_THROTTLING)
-	g_low_batt_limited_idx_lvl_0 = 0;
-	for (i = 0; i < g_opp_idx_num; i++) {
-		if (g_opp_table[i].gpufreq_khz <=
-			MT_GPUFREQ_LOW_BATT_VOLT_LIMIT_FREQ) {
-			g_low_batt_limited_idx_lvl_2 = i;
-			break;
-		}
-	}
-	register_low_battery_notify(&mt_gpufreq_low_batt_callback,
-		LOW_BATTERY_PRIO_GPU);
-#endif /* CONFIG_MTK_LOW_BATTERY_POWER_THROTTLING */
 
-#if IS_ENABLED(CONFIG_MTK_BATTERY_PERCENTAGE_POWER_THROTTLING)
-	g_batt_percent_limited_idx_lv_0 = 0;
-	for (i = 0; i < g_opp_idx_num; i++) {
-		g_batt_percent_limited_idx_lv_1 = 0;
-		if (g_opp_table[i].gpufreq_khz ==
-			MT_GPUFREQ_BATT_PERCENT_LIMIT_FREQ) {
-			g_batt_percent_limited_idx_lv_1 = i;
-			break;
-		}
-	}
-	register_battery_percent_notify(&mt_gpufreq_batt_percent_callback,
-		BATTERY_PERCENT_PRIO_GPU);
-#endif /* CONFIG_MTK_BATTERY_PERCENTAGE_POWER_THROTTLING */
 
-#if IS_ENABLED(CONFIG_MTK_BATTERY_OC_POWER_THROTTLING)
-	g_batt_oc_limited_idx_lvl_0 = 0;
-	for (i = 0; i < g_opp_idx_num; i++) {
-		if (g_opp_table[i].gpufreq_khz <=
-			MT_GPUFREQ_BATT_OC_LIMIT_FREQ) {
-			g_batt_oc_limited_idx_lvl_1 = i;
-			break;
-		}
-	}
-	register_battery_oc_notify(&mt_gpufreq_batt_oc_callback,
-		BATTERY_OC_PRIO_GPU);
-#endif /* CONFIG_MTK_BATTERY_OC_POWER_THROTTLING */
 
 	gpufreq_pr_info("@%s: VGPU sfchg raising rate: %d us\n",
 		__func__, g_vgpu_sfchg_rrate);
